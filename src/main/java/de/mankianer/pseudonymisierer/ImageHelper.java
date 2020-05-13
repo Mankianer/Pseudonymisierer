@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,16 @@ public class ImageHelper {
     Graphics g = img.getGraphics();
     drawRect(g, rectangle, bgColor);
     writeTextInRect(g, text, rectangle, fontColor);
+    writeToFile(path, img);
+  }
+
+  public void drawRectsAndTexts(Path path, List<Map.Entry<String,Rectangle>> changes) throws IOException {
+    BufferedImage img = getImg(path);
+    Graphics g = img.getGraphics();
+    changes.forEach(e -> {
+      drawRect(g, e.getValue(), Color.CYAN);
+      writeTextInRect(g, e.getKey(), e.getValue(), Color.BLACK);
+    });
     writeToFile(path, img);
   }
 
